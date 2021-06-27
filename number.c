@@ -3,16 +3,15 @@
 //
 #include "number.h"
 
-char *randomPhoneNumber(time_t support) {
+char *random_phone_number(time_t support) {
     srand(time(NULL) + (support * 13L));
-    unsigned long randv = (unsigned long) rand() % RAND_BOUND;
+    unsigned long randv = (unsigned long) rand();
     while ((randv <<= 3) < RAND_LOW);
-    randv %= RAND_BOUND;
 
     char *prefix;
     switch (randv % 3) {
         case 1:
-            prefix = "135";
+            prefix = "136";
             break;
         case 2:
             prefix = "185";
@@ -24,7 +23,7 @@ char *randomPhoneNumber(time_t support) {
     char *retstr = malloc(15 * sizeof(char));
     char *temp = malloc(10 * sizeof(char));
     sprintf(temp, "%lu", randv);
-    sprintf(retstr, "%s%s", prefix, temp + 1);
+    sprintf(retstr, "%s%s", prefix, temp + (strlen(temp) - 8));
     free(temp);
     return retstr;
 }
