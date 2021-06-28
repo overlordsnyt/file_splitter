@@ -5,8 +5,13 @@
 
 char *random_phone_number(time_t support) {
     srand(time(NULL) + (support * 13L));
-    unsigned long randv = (unsigned long) rand();
+    unsigned long register randv = (unsigned long) rand();
+
+    randomize:
     while ((randv <<= 3) < RAND_LOW);
+    randv %= RAND_MOD;
+    if (randv < RAND_LOW)
+        goto randomize;
 
     char *prefix;
     switch (randv % 3) {

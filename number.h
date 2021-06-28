@@ -5,13 +5,14 @@
 #ifndef PRACTICE1_NUMBER_H
 #define PRACTICE1_NUMBER_H
 
-
+#define RAND_MOD   1000000001
 #define RAND_LOW   100000000
 
 #include <stdio.h>
 #include <time.h>
 #include <stdlib.h>
 #include <string.h>
+#include <threads.h>
 
 char *random_phone_number(time_t support);
 

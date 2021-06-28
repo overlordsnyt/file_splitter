@@ -1,6 +1,12 @@
 # cmake_minimum_required(VERSION <specify CMake version here>)
+cmake_minimum_required(VERSION 3.10.0)
 project(practice1 C)
 
 set(CMAKE_C_STANDARD 11)
 
-add_executable(practice1 main.c number.c number.h)
+find_package(Threads REQUIRED)
+set(phone_generator phonegen)
+
+add_executable(${phone_generator} random_phone_generator.c number.c number.h)
+
+target_link_libraries(${phone_generator} ${CMAKE_THREAD_LIBS_INIT})
