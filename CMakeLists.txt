@@ -6,7 +6,10 @@ set(CMAKE_C_STANDARD 11)
 
 find_package(Threads REQUIRED)
 set(phone_generator phonegen)
+set(splitter splitter)
 
-add_executable(${phone_generator} random_phone_generator.c number.c number.h)
+add_executable(${phone_generator} random_phone_generator.c number.c)
 
 target_link_libraries(${phone_generator} ${CMAKE_THREAD_LIBS_INIT})
+
+add_executable(${splitter} split_file.c)
