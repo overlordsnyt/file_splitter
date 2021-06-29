@@ -24,7 +24,6 @@ char *random_phone_number(time_t support) {
         default:
             prefix = "150";
     }
-    //TODO remember free this who quoted
     char *retstr = malloc(15 * sizeof(char));
     char *temp = malloc(10 * sizeof(char));
     sprintf(temp, "%lu", randv);
