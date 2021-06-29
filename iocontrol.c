@@ -35,32 +35,37 @@ file_io *init_io(char *filename) {
 
 void delete_io(file_io *file) {
     fclose(file->fd_ptr);
-    free(file->mutex);
+    mtx_destroy(file->mutex);
     free(file);
 }
 
-char *readlines_s(file_io *file, size_t line_count) {
+size_t readlines_s(char *lines, size_t line_count, file_io *file) {
+    mtx_lock(file->mutex);
     size_t register tt = (size_t) file->t;
     size_t exist = file->exist;
     size_t lines_maxlen = line_count * LINE_SIZE_GUESS * sizeof(char);
     size_t register read_index = 0;
     size_t read_line_count = 0;
     //TODO free read lines str
-    char *read_lines = malloc(lines_maxlen);
-    memset(read_lines, 0, lines_maxlen);
+    lines = malloc(lines_maxlen);
+    memset(lines, 0, lines_maxlen);
     while (read_line_count < line_count) {
         if (tt >= exist) {
-            readfill_un(file);
+            size_t sz = readfill_un(file);
+            if (sz == 0 && feof(file->fd_ptr))
+                break;
             exist = file->exist;
             tt = (size_t) file->t;
         }
         char nowchar = file->buff[tt];
-        read_lines[read_index++] = nowchar;
+        lines[read_index++] = nowchar;
         if (nowchar == '\n')
             ++read_line_count;
         ++tt;
     }
-    return read_lines;
+    file->t = (off_t) tt;
+    mtx_unlock(file->mutex);
+    return read_index;
 }
 
 size_t readfill_un(file_io *file) {

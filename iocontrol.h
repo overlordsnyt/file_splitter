@@ -19,7 +19,7 @@ typedef struct _io_struct_ {
 
 file_io *init_io(char *filename);
 
-char *readlines_s(file_io *file, size_t line_count);
+size_t readlines_s(char *lines, size_t line_count, file_io *file);
 
 void delete_io(file_io *file);
 
