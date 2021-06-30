@@ -28,7 +28,7 @@ static mtx_t *mkdir_mutex;
 static mtx_t *file_count_mutex;
 
 int main(int argc, char *argv[]) {
-    if (argc != 3) {
+    if (argc != 4) {
         fprintf(stderr, "usage: %s [whole_file.txt] [file_lines] [read_line_max_length]",
                 argv[0]);
         exit(ENOEXEC);
