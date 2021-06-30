@@ -29,14 +29,14 @@ static mtx_t *file_count_mutex;
 
 int main(int argc, char *argv[]) {
     if (argc != 3) {
-        fprintf(stderr, "usage: %s [whole_file.txt] [file_lines]",
+        fprintf(stderr, "usage: %s [whole_file.txt] [file_lines] [read_line_max_length]",
                 argv[0]);
         exit(ENOEXEC);
     }
 
     file = init_io(argv[1]);
     line_count = strtoul(argv[2], NULL, 10);
-    lines_maxlen = line_count * LINE_SIZE_GUESS * sizeof(char);
+    lines_maxlen = line_count * strtol(argv[3], NULL, 10) * sizeof(char);
     mkdir_mutex = malloc(sizeof(mtx_t));
     file_count_mutex = malloc(sizeof(mtx_t));
     if (mtx_init(mkdir_mutex, mtx_plain) == thrd_error)
