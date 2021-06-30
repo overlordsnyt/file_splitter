@@ -20,3 +20,5 @@ target_link_libraries(${splitter} ${CMAKE_THREAD_LIBS_INIT})
 add_executable(guess test_guess.c)
 
 add_executable(guess2 test_guess2.c)
+
+target_link_libraries(guess2 ${CMAKE_THREAD_LIBS_INIT})
