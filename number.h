@@ -12,7 +12,8 @@
 #include <time.h>
 #include <stdlib.h>
 #include <string.h>
-#include <threads.h>
+
+#include "compability.h"
 
 char *random_phone_number(time_t support);
 

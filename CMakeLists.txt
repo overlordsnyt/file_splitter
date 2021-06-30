@@ -5,6 +5,10 @@ project(practice1 VERSION 1.0.0)
 
 set(CMAKE_C_STANDARD 11)
 
+if (MSVC)
+    add_definitions(-D_CRT_SECURE_NO_WARNINGS)
+endif ()
+
 find_package(Threads REQUIRED)
 set(phone_generator phonegen)
 set(splitter splitter)
