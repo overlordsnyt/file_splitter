@@ -13,13 +13,19 @@ find_package(Threads REQUIRED)
 set(phone_generator phonegen)
 set(splitter splitter)
 
+#phone_generator是一行一号码的电话号码txt文件生成器
+
 add_executable(${phone_generator} random_phone_generator.c number.c)
 
 target_link_libraries(${phone_generator} ${CMAKE_THREAD_LIBS_INIT})
 
+#splitter是根据命令行参数，指定行数，分割大txt成小txt的分割工具
+
 add_executable(${splitter} split_file.c iocontrol.c)
 
 target_link_libraries(${splitter} ${CMAKE_THREAD_LIBS_INIT})
+
+#guess是关于C语言的想法测试和演练程序
 
 add_executable(guess test_guess.c)
 
