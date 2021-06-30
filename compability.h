@@ -8,7 +8,10 @@
 #define PRACTICE1_COMPABILITY_H
 #ifdef _WINDOWS
 
+#include <sys/types.h>
 #include <thr/xthreads.h>
+//#include <c11/stdatomic.h>
+#include <direct.h>
 
 typedef _Thrd_t thrd_t;
 #define thrd_create  _Thrd_create
@@ -25,8 +28,14 @@ typedef _Mtx_t mtx_t;
 #define mtx_lock(x) _Mtx_lock(*x)
 #define mtx_unlock(x) _Mtx_unlock(*x)
 
+#define mkdir(x, y) _mkdir(x)
+#define fwrite_unlocked _fwrite_nolock
+#define fread_unlocked _fread_nolock
+
+#define strdup _strdup
 #else
 #include <threads.h>
+#include <stdatomic.h>
 #endif
 
 #endif //PRACTICE1_COMPABILITY_H

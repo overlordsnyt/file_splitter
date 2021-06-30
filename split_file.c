@@ -2,18 +2,12 @@
 // Created by overlord on 2021/6/28.
 //
 
+#include "compability.h"
 #include "iocontrol.h"
 #include <string.h>
 #include <stdbool.h>
-#include <stdatomic.h>
 #include <errno.h>
 #include <sys/stat.h>
-
-//#ifdef _WIN32
-//#define PATH_SEPARATOR '\'
-//#else
-#define PATH_SEPARATOR '/'
-//#endif
 
 #define THREAD_COUNT 4
 #define FILENAME_BUFF 256
@@ -22,7 +16,7 @@ static file_io *file;
 static size_t line_count;
 static size_t lines_maxlen;
 
-static atomic_ulong file_count_offset = 0;
+static unsigned long file_count_offset = 0;
 
 int thrd_gen_split_file(void *args);
 
@@ -31,6 +25,7 @@ static void destructor(void);
 static FILE *Fcreate_writer(char *filepath);
 
 static mtx_t *mkdir_mutex;
+static mtx_t *file_count_mutex;
 
 int main(int argc, char *argv[]) {
     if (argc != 3) {
@@ -43,8 +38,11 @@ int main(int argc, char *argv[]) {
     line_count = strtoul(argv[2], NULL, 10);
     lines_maxlen = line_count * LINE_SIZE_GUESS * sizeof(char);
     mkdir_mutex = malloc(sizeof(mtx_t));
+    file_count_mutex = malloc(sizeof(mtx_t));
     if (mtx_init(mkdir_mutex, mtx_plain) == thrd_error)
         perror("Initial mkdir mutex error");
+    if (mtx_init(file_count_mutex, mtx_plain) == thrd_error)
+        perror("Initial file count mutex error");
 
     thrd_t thrd_pool[THREAD_COUNT];
     for (int i = 0; i < THREAD_COUNT; i++) {
@@ -62,14 +60,19 @@ int main(int argc, char *argv[]) {
         }
     }
 
+    mtx_destroy(file_count_mutex);
+    mtx_destroy(mkdir_mutex);
     delete_io(file);
 
     return EXIT_SUCCESS;
 }
 
 int thrd_gen_split_file(void *args) {
+#ifdef _WINDOWS
+    _Thrd_id_t current_tid = thrd_current();
+#else
     thrd_t current_tid = thrd_current();
-
+#endif
     while (true) {
         char *readstr = malloc(lines_maxlen);
         memset(readstr, 0, lines_maxlen);
@@ -79,9 +82,11 @@ int thrd_gen_split_file(void *args) {
         }
 
         char *split_file_name = malloc(FILENAME_BUFF);
+        mtx_lock(file_count_mutex);
         int ret = sprintf(split_file_name,
                           "split/phone-thread%lu-fileNo.%lu.txt",
                           current_tid, ++file_count_offset);
+        mtx_unlock(file_count_mutex);
         if (ret < 0) {
             perror("Output split file error");
             thrd_exit(thrd_error);

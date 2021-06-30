@@ -9,6 +9,11 @@ if (MSVC)
     add_definitions(-D_CRT_SECURE_NO_WARNINGS)
 endif ()
 
+
+#include_directories(
+#        D:/Codes/C/c11
+#)
+
 find_package(Threads REQUIRED)
 set(phone_generator phonegen)
 set(splitter splitter)

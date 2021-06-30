@@ -7,7 +7,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <threads.h>
+#include "compability.h"
 
 #define LINE_SIZE_GUESS 15
 
