@@ -9,6 +9,8 @@
 #include <stdlib.h>
 #include <threads.h>
 
+#define LINE_SIZE_GUESS 15
+
 typedef struct _io_struct_ {
     mtx_t *mutex;
     FILE *fd_ptr;

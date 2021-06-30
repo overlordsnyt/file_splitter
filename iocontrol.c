@@ -5,7 +5,6 @@
 #include "iocontrol.h"
 #include <string.h>
 
-#define LINE_SIZE_GUESS 15
 
 static size_t readfill_un(file_io *file);
 
@@ -43,12 +42,9 @@ size_t readlines_s(char *lines, size_t line_count, file_io *file) {
     mtx_lock(file->mutex);
     size_t register tt = (size_t) file->t;
     size_t exist = file->exist;
-    size_t lines_maxlen = line_count * LINE_SIZE_GUESS * sizeof(char);
     size_t register read_index = 0;
     size_t read_line_count = 0;
     //TODO free read lines str
-    lines = malloc(lines_maxlen);
-    memset(lines, 0, lines_maxlen);
     while (read_line_count < line_count) {
         if (tt >= exist) {
             size_t sz = readfill_un(file);
@@ -69,10 +65,10 @@ size_t readlines_s(char *lines, size_t line_count, file_io *file) {
 }
 
 size_t readfill_un(file_io *file) {
-    if (file->t < (long) file->exist) {
-        fprintf(stderr, "No need to fill new buff. remain: %ld\n", (long) file->exist - file->t);
-        exit(EXIT_FAILURE);
-    }
+//    if (file->t < (long) file->exist) {
+//        fprintf(stderr, "No need to fill new buff. remain: %ld\n", (long) file->exist - file->t);
+//        exit(EXIT_FAILURE);
+//    }
     size_t reading = fread_unlocked(file->buff, sizeof(char), BUFSIZ, file->fd_ptr);
     if (reading < BUFSIZ) {
         if (ferror(file->fd_ptr)) {

@@ -1,6 +1,7 @@
 # cmake_minimum_required(VERSION <specify CMake version here>)
 cmake_minimum_required(VERSION 3.10.0)
 project(practice1 C)
+project(practice1 VERSION 1.0.0)
 
 set(CMAKE_C_STANDARD 11)
 
@@ -15,3 +16,5 @@ target_link_libraries(${phone_generator} ${CMAKE_THREAD_LIBS_INIT})
 add_executable(${splitter} split_file.c iocontrol.c)
 
 target_link_libraries(${splitter} ${CMAKE_THREAD_LIBS_INIT})
+
+add_executable(guess test_guess.c)
