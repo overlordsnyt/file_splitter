@@ -2,6 +2,8 @@
 // Created by overlord on 2021/7/1.
 //
 
+#define BUFSIZ 4096
+
 #ifndef PRACTICE1_COMPABILITY_H
 #define PRACTICE1_COMPABILITY_H
 #ifdef _WINDOWS

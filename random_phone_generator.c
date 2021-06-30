@@ -22,12 +22,14 @@ int main() {
 
 int write_file(void *args) {
     FILE *phone_file_ptr = (FILE *) args;
-
-    for (size_t register buf_len = 0; buf_len < BUFSIZ; buf_len += 12) {
+    size_t register buf_len = 0;
+    for (buf_len = 0; buf_len < BUFSIZ; buf_len += 12) {
+//    for (size_t register buf_len = 0; buf_len < BUFSIZ; buf_len += 12) {
         char *gen_phone = random_phone_number(thrd_current() - buf_len);
         fprintf(phone_file_ptr, "%s\n", gen_phone);
         free(gen_phone);
     }
+    printf("this buffer filled bytes: %zu\n", buf_len);
     return thrd_success;
 }
 
