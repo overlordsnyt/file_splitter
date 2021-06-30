@@ -5,14 +5,13 @@ project(practice1 VERSION 1.0.0)
 
 set(CMAKE_C_STANDARD 11)
 
-if (MSVC)
-    add_definitions(-D_CRT_SECURE_NO_WARNINGS)
+if (CMAKE_BUILD_TYPE STREQUAL "Debug")
+
+    if (MSVC)
+        add_definitions(-D_CRT_SECURE_NO_WARNINGS)
+    endif ()
+
 endif ()
-
-
-#include_directories(
-#        D:/Codes/C/c11
-#)
 
 find_package(Threads REQUIRED)
 set(phone_generator phonegen)
