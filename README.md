@@ -4,7 +4,7 @@
 
 ## 下载
 
-[https://github.com/overlordsnyt/file_splitter/releases]()
+https://github.com/overlordsnyt/file_splitter/releases
 
 ## 用法
 
